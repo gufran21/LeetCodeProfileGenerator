@@ -1,0 +1,30 @@
+{
+  "matchedUser": {
+    "username": "TestUser",
+    "profile": {
+      "realName": "Test User",
+      "ranking": 42156,
+      "userAvatar": "https://assets.leetcode.com/users/default_avatar.jpg",
+      "aboutMe": "Competitive programmer"
+    },
+    "submitStatsGlobal": {
+      "acSubmissionNum": [
+        { "difficulty": "All", "count": 403 },
+        { "difficulty": "Easy", "count": 142 },
+        { "difficulty": "Medium", "count": 203 },
+        { "difficulty": "Hard", "count": 58 }
+      ]
+    },
+    "problemsSolvedBeatsStats": [
+      { "difficulty": "Easy", "percentage": 85.2 },
+      { "difficulty": "Medium", "percentage": 72.1 },
+      { "difficulty": "Hard", "percentage": 65.8 }
+    ]
+  },
+  "allQuestionsCount": [
+    { "difficulty": "All", "count": 3328 },
+    { "difficulty": "Easy", "count": 830 },
+    { "difficulty": "Medium", "count": 1742 },
+    { "difficulty": "Hard", "count": 756 }
+  ]
+}

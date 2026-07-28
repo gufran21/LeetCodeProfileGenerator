@@ -1,0 +1,24 @@
+{
+  "userContestRanking": {
+    "attendedContestsCount": 47,
+    "rating": 1847.234,
+    "globalRanking": 42156,
+    "totalParticipants": 512000,
+    "topPercentage": 8.23,
+    "badge": {
+      "name": "Knight"
+    }
+  },
+  "userContestRankingHistory": [
+    { "attended": true, "contest": { "title": "Weekly Contest 395", "startTime": "1718524800" }, "rating": 1694.0, "ranking": 10455, "trendDirection": "UP" },
+    { "attended": true, "contest": { "title": "Biweekly Contest 131", "startTime": "1719129600" }, "rating": 1716.0, "ranking": 9234, "trendDirection": "UP" },
+    { "attended": true, "contest": { "title": "Weekly Contest 396", "startTime": "1719734400" }, "rating": 1754.0, "ranking": 7890, "trendDirection": "UP" },
+    { "attended": true, "contest": { "title": "Weekly Contest 397", "startTime": "1720339200" }, "rating": 1749.0, "ranking": 8102, "trendDirection": "DOWN" },
+    { "attended": true, "contest": { "title": "Weekly Contest 398", "startTime": "1720944000" }, "rating": 1816.0, "ranking": 4998, "trendDirection": "UP" },
+    { "attended": false, "contest": { "title": "Biweekly Contest 132", "startTime": "1721548800" }, "rating": 1816.0, "ranking": 0, "trendDirection": "NONE" },
+    { "attended": true, "contest": { "title": "Weekly Contest 399", "startTime": "1722153600" }, "rating": 1797.0, "ranking": 6210, "trendDirection": "DOWN" },
+    { "attended": true, "contest": { "title": "Weekly Contest 400", "startTime": "1722758400" }, "rating": 1842.0, "ranking": 3877, "trendDirection": "UP" },
+    { "attended": true, "contest": { "title": "Biweekly Contest 133", "startTime": "1723363200" }, "rating": 1824.0, "ranking": 5102, "trendDirection": "DOWN" },
+    { "attended": true, "contest": { "title": "Weekly Contest 401", "startTime": "1723968000" }, "rating": 1847.0, "ranking": 4521, "trendDirection": "UP" }
+  ]
+}

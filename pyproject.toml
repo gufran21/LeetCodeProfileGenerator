@@ -1,0 +1,71 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "leetcode-profile-generator"
+version = "1.0.0"
+description = "Generate beautiful SVG dashboards from your LeetCode profile for GitHub READMEs"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [
+    { name = "gufran21" },
+]
+keywords = [
+    "leetcode",
+    "github",
+    "readme",
+    "svg",
+    "profile",
+    "stats",
+    "competitive-programming",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Utilities",
+]
+dependencies = [
+    "httpx>=0.27",
+    "jinja2>=3.1",
+    "click>=8.1",
+]
+
+[project.scripts]
+leetcode-profile = "leetcode_profile_generator.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/leetcode_profile_generator"]
+
+[tool.pyright]
+extraPaths = ["src"]
+
+[project.urls]
+Homepage = "https://github.com/gufran21/leetcode-profile-generator"
+Repository = "https://github.com/gufran21/leetcode-profile-generator"
+Issues = "https://github.com/gufran21/leetcode-profile-generator/issues"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "A", "SIM"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true

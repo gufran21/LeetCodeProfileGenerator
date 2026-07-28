@@ -1,0 +1,98 @@
+name: 'LeetCode Profile Generator'
+description: 'Generate beautiful SVG dashboards from your LeetCode profile for GitHub READMEs'
+author: 'gufran21'
+
+branding:
+  icon: 'bar-chart-2'
+  color: 'orange'
+
+inputs:
+  username:
+    description: 'Your LeetCode username'
+    required: true
+  theme:
+    description: 'Color theme (github_dark, github_light, dracula, nord, catppuccin_mocha, catppuccin_latte, tokyo_night, gruvbox_dark, one_dark)'
+    required: false
+    default: 'github_dark'
+  output_dir:
+    description: 'Directory to output SVG files'
+    required: false
+    default: 'assets'
+  auto_commit:
+    description: 'Automatically commit and push generated SVG cards back to repository'
+    required: false
+    default: 'true'
+  commit_message:
+    description: 'Commit message when auto_commit is enabled'
+    required: false
+    default: 'chore: update LeetCode profile cards [skip ci]'
+  generate_stats:
+    description: 'Generate stats card'
+    required: false
+    default: 'true'
+  generate_rating:
+    description: 'Generate rating history graph'
+    required: false
+    default: 'true'
+  generate_difficulty:
+    description: 'Generate difficulty distribution card'
+    required: false
+    default: 'true'
+  generate_heatmap:
+    description: 'Generate submission heatmap'
+    required: false
+    default: 'true'
+  generate_streak:
+    description: 'Generate streak card'
+    required: false
+    default: 'true'
+  generate_contest_history:
+    description: 'Generate contest history table'
+    required: false
+    default: 'true'
+  generate_badges:
+    description: 'Generate badges card'
+    required: false
+    default: 'true'
+  generate_dashboard:
+    description: 'Generate combined dashboard card'
+    required: false
+    default: 'false'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+    - name: Install dependencies
+      shell: bash
+      run: pip install ${{ github.action_path }}
+
+    - name: Generate SVG cards
+      shell: bash
+      run: |
+        ARGS="--username ${{ inputs.username }} --theme ${{ inputs.theme }} --output ${{ inputs.output_dir }}"
+
+        if [ "${{ inputs.generate_stats }}" != "true" ]; then ARGS="$ARGS --no-stats"; fi
+        if [ "${{ inputs.generate_rating }}" != "true" ]; then ARGS="$ARGS --no-rating"; fi
+        if [ "${{ inputs.generate_difficulty }}" != "true" ]; then ARGS="$ARGS --no-difficulty"; fi
+        if [ "${{ inputs.generate_heatmap }}" != "true" ]; then ARGS="$ARGS --no-heatmap"; fi
+        if [ "${{ inputs.generate_streak }}" != "true" ]; then ARGS="$ARGS --no-streak"; fi
+        if [ "${{ inputs.generate_contest_history }}" != "true" ]; then ARGS="$ARGS --no-contest-history"; fi
+        if [ "${{ inputs.generate_badges }}" != "true" ]; then ARGS="$ARGS --no-badges"; fi
+        if [ "${{ inputs.generate_dashboard }}" = "true" ]; then ARGS="$ARGS --dashboard"; fi
+
+        leetcode-profile $ARGS --no-cache
+
+    - name: Commit and push changes
+      if: ${{ inputs.auto_commit == 'true' }}
+      shell: bash
+      run: |
+        git config local user.email "github-actions[bot]@users.noreply.github.com"
+        git config local user.name "github-actions[bot]"
+        git add ${{ inputs.output_dir }}/
+        git diff --staged --quiet || git commit -m "${{ inputs.commit_message }}"
+        git push

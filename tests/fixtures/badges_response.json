@@ -1,0 +1,13 @@
+{
+  "matchedUser": {
+    "badges": [
+      { "id": "1", "name": "100 Solved", "shortName": "100", "displayName": "100 Days Badge", "icon": "", "hoverText": "Solved 100 problems", "creationDate": "2023-06-15", "category": "solving", "medal": null },
+      { "id": "2", "name": "500 Solved", "shortName": "500", "displayName": "500 Days Badge", "icon": "", "hoverText": "Solved 500 problems", "creationDate": "2024-02-20", "category": "solving", "medal": null },
+      { "id": "3", "name": "Knight", "shortName": "Knight", "displayName": "Knight Badge", "icon": "", "hoverText": "Contest rating above 1600", "creationDate": "2024-05-10", "category": "contest", "medal": { "slug": "knight", "config": { "iconGif": "", "iconGifBackground": "" } } },
+      { "id": "4", "name": "Dec 2023", "shortName": "Dec23", "displayName": "Dec LeetCoding Challenge", "icon": "", "hoverText": "Completed December 2023 Daily Challenge", "creationDate": "2023-12-31", "category": "daily", "medal": null }
+    ],
+    "upcomingBadges": [
+      { "name": "1000 Solved", "icon": "", "progress": 0.403 }
+    ]
+  }
+}
