@@ -137,14 +137,12 @@ def generate_dashboard_card(data: LeetCodeData, theme: Theme) -> str:
             ("target", "Acceptance", f"{data.solved.acceptance_rate}%", stat_col2_x),
         ])
 
-    row_idx = 0
-    for icon_name, label, value, sx in stats:
+    for row_idx, (icon_name, label, value, sx) in enumerate(stats):
         row = row_idx // 2
         sy = y + row * stats_row_h
         svg_parts.append(render_icon(icon_name, sx, sy - 1, 13, theme.icon_color))
         svg_parts.append(renderer.text(sx + 18, sy + 10, f"{label}:", font_size=11, fill=theme.text_secondary))
         svg_parts.append(renderer.text(sx + 80, sy + 10, value, font_size=11, fill=theme.text_color, weight="600"))
-        row_idx += 1
 
     # ── Difficulty Bars ──
     y += (len(stats) // 2 + 1) * stats_row_h + 8

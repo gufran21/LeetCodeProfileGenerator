@@ -163,7 +163,10 @@ class LeetCodeClient:
                 # Check for GraphQL errors
                 if "errors" in data:
                     errors = data["errors"]
-                    error_msg = errors[0].get("message", "Unknown GraphQL error") if errors else "Unknown"
+                    error_msg = (
+                        errors[0].get("message", "Unknown GraphQL error")
+                        if errors else "Unknown"
+                    )
                     logger.warning("GraphQL error: %s", error_msg)
 
                     # Check if it's a "user not found" error

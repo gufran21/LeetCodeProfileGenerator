@@ -50,11 +50,18 @@ def generate_contest_history_card(data: LeetCodeData, theme: Theme) -> str:
     # ── Defs ──
     svg_parts.append("<defs>")
     if theme.bg_gradient:
-        svg_parts.append(renderer.create_gradient("bg_grad", theme.bg_gradient[0], theme.bg_gradient[1]))
-    svg_parts.append(renderer.create_drop_shadow("card_shadow", blur=8, offset_y=4, color=theme.shadow_color))
+        svg_parts.append(renderer.create_gradient(
+            "bg_grad", theme.bg_gradient[0], theme.bg_gradient[1]
+        ))
+    svg_parts.append(renderer.create_drop_shadow(
+        "card_shadow", blur=8, offset_y=4, color=theme.shadow_color
+    ))
     svg_parts.append("<style>")
     svg_parts.append("""
-      @keyframes fadeIn { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(3px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
       .table-content { animation: fadeIn 0.4s ease-out; }
       @media (prefers-reduced-motion: reduce) { .table-content { animation: none; } }
     """)
@@ -86,10 +93,22 @@ def generate_contest_history_card(data: LeetCodeData, theme: Theme) -> str:
     col_rank = 360
     col_delta = 445
 
-    svg_parts.append(renderer.text(col_contest, y + 12, "Contest", font_size=11, fill=theme.text_secondary, weight="600"))
-    svg_parts.append(renderer.text(col_rating, y + 12, "Rating", font_size=11, fill=theme.text_secondary, weight="600"))
-    svg_parts.append(renderer.text(col_rank, y + 12, "Rank", font_size=11, fill=theme.text_secondary, weight="600"))
-    svg_parts.append(renderer.text(col_delta, y + 12, "Δ", font_size=11, fill=theme.text_secondary, weight="600"))
+    svg_parts.append(renderer.text(
+        col_contest, y + 12, "Contest",
+        font_size=11, fill=theme.text_secondary, weight="600",
+    ))
+    svg_parts.append(renderer.text(
+        col_rating, y + 12, "Rating",
+        font_size=11, fill=theme.text_secondary, weight="600",
+    ))
+    svg_parts.append(renderer.text(
+        col_rank, y + 12, "Rank",
+        font_size=11, fill=theme.text_secondary, weight="600",
+    ))
+    svg_parts.append(renderer.text(
+        col_delta, y + 12, "Δ",
+        font_size=11, fill=theme.text_secondary, weight="600",
+    ))
 
     # Header separator
     y += table_header_h - 4
@@ -162,13 +181,27 @@ def _placeholder(renderer: SVGRenderer, theme: Theme, username: str) -> str:
     parts.append(renderer.svg_header(width, height, title=f"No contests for {username}"))
     parts.append("<defs>")
     if theme.bg_gradient:
-        parts.append(renderer.create_gradient("bg_grad", theme.bg_gradient[0], theme.bg_gradient[1]))
+        parts.append(renderer.create_gradient(
+            "bg_grad", theme.bg_gradient[0], theme.bg_gradient[1]
+        ))
     parts.append("</defs>")
     fill = "url(#bg_grad)" if theme.bg_gradient else theme.bg_color
-    parts.append(renderer.rounded_rect(0.5, 0.5, width - 1, height - 1, rx=theme.border_radius, fill=fill, stroke=theme.border_color))
+    parts.append(renderer.rounded_rect(
+        0.5, 0.5, width - 1, height - 1,
+        rx=theme.border_radius, fill=fill, stroke=theme.border_color,
+    ))
     parts.append(render_icon("medal", 24, 24, 16, theme.icon_color))
-    parts.append(renderer.text(46, 38, "Recent Contests", font_size=16, fill=theme.title_color, weight="bold"))
-    parts.append(renderer.text(width / 2, 75, "No contest history available", font_size=13, fill=theme.text_secondary, anchor="middle"))
-    parts.append(renderer.text(width / 2, 95, "Participate in LeetCode contests to track your progress!", font_size=11, fill=theme.text_secondary, anchor="middle"))
+    parts.append(renderer.text(
+        46, 38, "Recent Contests",
+        font_size=16, fill=theme.title_color, weight="bold",
+    ))
+    parts.append(renderer.text(
+        width / 2, 75, "No contest history available",
+        font_size=13, fill=theme.text_secondary, anchor="middle",
+    ))
+    parts.append(renderer.text(
+        width / 2, 95, "Participate in LeetCode contests to track your progress!",
+        font_size=11, fill=theme.text_secondary, anchor="middle",
+    ))
     parts.append(renderer.svg_footer())
     return "\n".join(parts)

@@ -82,11 +82,18 @@ def generate_badges_card(data: LeetCodeData, theme: Theme) -> str:
     # ── Defs ──
     svg_parts.append("<defs>")
     if theme.bg_gradient:
-        svg_parts.append(renderer.create_gradient("bg_grad", theme.bg_gradient[0], theme.bg_gradient[1]))
-    svg_parts.append(renderer.create_drop_shadow("card_shadow", blur=8, offset_y=4, color=theme.shadow_color))
+        svg_parts.append(renderer.create_gradient(
+            "bg_grad", theme.bg_gradient[0], theme.bg_gradient[1]
+        ))
+    svg_parts.append(renderer.create_drop_shadow(
+        "card_shadow", blur=8, offset_y=4, color=theme.shadow_color
+    ))
     svg_parts.append("<style>")
     svg_parts.append("""
-      @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+      @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.9); }
+        to { opacity: 1; transform: scale(1); }
+      }
       .badge-item { animation: fadeIn 0.4s ease-out backwards; }
       @media (prefers-reduced-motion: reduce) { .badge-item { animation: none; } }
     """)
@@ -146,7 +153,11 @@ def generate_badges_card(data: LeetCodeData, theme: Theme) -> str:
 
         # Badge date
         if badge.creation_date:
-            date_str = badge.creation_date[:10] if len(badge.creation_date) >= 10 else badge.creation_date
+            date_str = (
+                badge.creation_date[:10]
+                if len(badge.creation_date) >= 10
+                else badge.creation_date
+            )
             svg_parts.append(renderer.text(
                 x + badge_w / 2, y + 60, date_str,
                 font_size=8, fill=theme.text_secondary, anchor="middle",
@@ -187,13 +198,26 @@ def _placeholder(renderer: SVGRenderer, theme: Theme, username: str) -> str:
     parts.append(renderer.svg_header(width, height, title=f"No badges for {username}"))
     parts.append("<defs>")
     if theme.bg_gradient:
-        parts.append(renderer.create_gradient("bg_grad", theme.bg_gradient[0], theme.bg_gradient[1]))
+        parts.append(renderer.create_gradient(
+            "bg_grad", theme.bg_gradient[0], theme.bg_gradient[1]
+        ))
     parts.append("</defs>")
     fill = "url(#bg_grad)" if theme.bg_gradient else theme.bg_color
-    parts.append(renderer.rounded_rect(0.5, 0.5, width - 1, height - 1, rx=theme.border_radius, fill=fill, stroke=theme.border_color))
+    parts.append(renderer.rounded_rect(
+        0.5, 0.5, width - 1, height - 1,
+        rx=theme.border_radius, fill=fill, stroke=theme.border_color,
+    ))
     parts.append(render_icon("shield", 24, 24, 16, theme.icon_color))
-    parts.append(renderer.text(46, 38, "Badges", font_size=16, fill=theme.title_color, weight="bold"))
-    parts.append(renderer.text(width / 2, 75, "No badges earned yet", font_size=13, fill=theme.text_secondary, anchor="middle"))
-    parts.append(renderer.text(width / 2, 95, "Keep solving problems to earn badges!", font_size=11, fill=theme.text_secondary, anchor="middle"))
+    parts.append(renderer.text(
+        46, 38, "Badges", font_size=16, fill=theme.title_color, weight="bold"
+    ))
+    parts.append(renderer.text(
+        width / 2, 75, "No badges earned yet",
+        font_size=13, fill=theme.text_secondary, anchor="middle",
+    ))
+    parts.append(renderer.text(
+        width / 2, 95, "Keep solving problems to earn badges!",
+        font_size=11, fill=theme.text_secondary, anchor="middle",
+    ))
     parts.append(renderer.svg_footer())
     return "\n".join(parts)

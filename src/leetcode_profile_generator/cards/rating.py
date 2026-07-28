@@ -47,8 +47,6 @@ def generate_rating_card(data: LeetCodeData, theme: Theme) -> str:
     chart_right = width - padding - 10
     chart_top = padding + 45
     chart_bottom = height - padding - 55  # space for X-axis labels + footer
-    chart_w = chart_right - chart_left
-    chart_h = chart_bottom - chart_top
 
     # ── Scale data ──
     ratings = [r.rating for r in records]
@@ -162,7 +160,7 @@ def generate_rating_card(data: LeetCodeData, theme: Theme) -> str:
         )
 
     # ── Data point dots with tooltips ──
-    for i, (point, record) in enumerate(zip(chart_points, records)):
+    for i, (point, record) in enumerate(zip(chart_points, records, strict=False)):
         tooltip = f"{record.title} — Rating: {record.rating:.0f}, Rank: #{format_number(record.ranking)}"
         dot_r = 3
 
