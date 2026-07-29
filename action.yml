@@ -95,4 +95,5 @@ runs:
         git config --local user.name "github-actions[bot]"
         git add ${{ inputs.output_dir }}/
         git diff --staged --quiet || git commit -m "${{ inputs.commit_message }}"
+        git pull --rebase
         git push
