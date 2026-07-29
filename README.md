@@ -131,7 +131,7 @@ jobs:
 
       - uses: gufran21/leetcode-profile-generator@v1
         with:
-          username: gufran21  # 👈 Replace with your LeetCode username
+          username:  # 👈Replace with your LeetCode username
           theme: github_dark
 ```
 
@@ -191,13 +191,13 @@ Options:
 
 ```bash
 # Generate all cards with Dracula theme
-leetcode-profile -u gufran21 -t dracula -o ./assets
+leetcode-profile -u <username> -t dracula -o ./assets
 
 # Only stats and rating cards
-leetcode-profile -u gufran21 --no-heatmap --no-streak --no-badges --no-contest-history
+leetcode-profile -u <username> --no-heatmap --no-streak --no-badges --no-contest-history
 
 # Force fresh data (skip cache)
-leetcode-profile -u gufran21 --no-cache
+leetcode-profile -u <username> --no-cache
 
 # List all available themes
 leetcode-profile --list-themes
