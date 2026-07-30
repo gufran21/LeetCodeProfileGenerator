@@ -137,11 +137,13 @@ def get_week_grid(year: int | None = None) -> list[list[date | None]]:
         grid.append(week)
         current += timedelta(weeks=1)
 
-    # Ensure exactly 53 weeks
+    # Ensure exactly 53 weeks ending with the current week
+    if len(grid) > 53:
+        return grid[-53:]
     while len(grid) < 53:
         grid.append([None] * 7)
 
-    return grid[:53]
+    return grid
 
 
 def get_month_labels(grid: list[list[date | None]]) -> list[tuple[int, str]]:

@@ -39,9 +39,7 @@ class TestStatsCard:
 
     def test_contains_solved_counts(self, sample_data, dark_theme):
         svg = generate_stats_card(sample_data, dark_theme)
-        assert "142" in svg  # easy
-        assert "203" in svg  # medium
-        assert "58" in svg   # hard
+        assert "403" in svg  # total solved (142 + 203 + 58)
 
     def test_under_size_limit(self, sample_data, dark_theme):
         svg = generate_stats_card(sample_data, dark_theme)

@@ -7,7 +7,7 @@ and Jinja2 template rendering. All card generators build on this foundation.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
@@ -45,16 +45,18 @@ class SVGRenderer:
         )
 
         # Register custom filters and globals
-        self._env.filters["format_number"] = format_number
-        self._env.filters["lighten"] = lighten
-        self._env.filters["darken"] = darken
+        env_filters = cast(dict[str, Any], self._env.filters)
+        env_filters["format_number"] = format_number
+        env_filters["lighten"] = lighten
+        env_filters["darken"] = darken
 
-        self._env.globals["icon"] = render_icon
-        self._env.globals["theme"] = theme
-        self._env.globals["font_family"] = FONT_FAMILY
-        self._env.globals["font_family_mono"] = FONT_FAMILY_MONO
-        self._env.globals["measure_text"] = measure_text
-        self._env.globals["hex_with_alpha"] = hex_with_alpha
+        env_globals = cast(dict[str, Any], self._env.globals)
+        env_globals["icon"] = render_icon
+        env_globals["theme"] = theme
+        env_globals["font_family"] = FONT_FAMILY
+        env_globals["font_family_mono"] = FONT_FAMILY_MONO
+        env_globals["measure_text"] = measure_text
+        env_globals["hex_with_alpha"] = hex_with_alpha
 
     def render_template(self, template_name: str, context: dict[str, Any]) -> str:
         """Render a Jinja2 SVG template with the given context.
@@ -374,3 +376,86 @@ class SVGRenderer:
             f" to {{ {property_name}: {to_val}; }}"
             f" }}"
         )
+
+    @staticmethod
+    def hexagon(
+        cx: float,
+        cy: float,
+        r: float,
+        fill: str = "none",
+        stroke: str = "none",
+        stroke_width: float = 1,
+        filter_id: str | None = None,
+    ) -> str:
+        """Create a pointy-topped regular hexagon SVG element.
+
+        Args:
+            cx: Center X coordinate.
+            cy: Center Y coordinate.
+            r: Radius (distance from center to vertices).
+            fill: Fill color or gradient.
+            stroke: Stroke color.
+            stroke_width: Stroke width.
+            filter_id: Optional filter ID for shadow/glow.
+
+        Returns:
+            SVG <polygon> element string.
+        """
+        import math
+
+        points: list[str] = []
+        for i in range(6):
+            angle_rad = math.radians(i * 60 - 90)
+            px = cx + r * math.cos(angle_rad)
+            py = cy + r * math.sin(angle_rad)
+            points.append(f"{px:.1f},{py:.1f}")
+
+        points_str = " ".join(points)
+        attrs = [
+            f'points="{points_str}"',
+            f'fill="{fill}"',
+        ]
+        if stroke != "none":
+            attrs.append(f'stroke="{stroke}" stroke-width="{stroke_width}"')
+        if filter_id:
+            attrs.append(f'filter="url(#{filter_id})"')
+
+        return f"<polygon {' '.join(attrs)}/>"
+
+    @staticmethod
+    def progress_ring(
+        cx: float,
+        cy: float,
+        r: float,
+        percentage: float,
+        stroke: str,
+        stroke_bg: str = "#21262d",
+        stroke_width: float = 3,
+    ) -> str:
+        """Create a circular progress ring SVG element.
+
+        Args:
+            cx: Center X coordinate.
+            cy: Center Y coordinate.
+            r: Circle radius.
+            percentage: Fill percentage (0 to 100).
+            stroke: Progress arc color.
+            stroke_bg: Background circle stroke color.
+            stroke_width: Line width.
+
+        Returns:
+            SVG markup for background circle and progress arc.
+        """
+        import math
+
+        c = 2 * math.pi * r
+        pct = max(0.0, min(100.0, percentage))
+        offset = c * (1.0 - pct / 100.0)
+
+        parts = [
+            f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="none" stroke="{stroke_bg}" stroke-width="{stroke_width}"/>',
+            f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="none" stroke="{stroke}" stroke-width="{stroke_width}" '
+            f'stroke-dasharray="{c:.2f}" stroke-dashoffset="{offset:.2f}" stroke-linecap="round" '
+            f'transform="rotate(-90 {cx} {cy})"/>',
+        ]
+        return "\n".join(parts)

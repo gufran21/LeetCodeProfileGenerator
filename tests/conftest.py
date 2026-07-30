@@ -172,7 +172,7 @@ def sample_badges() -> list[Badge]:
 @pytest.fixture
 def sample_upcoming_badges() -> list[UpcomingBadge]:
     """Sample upcoming badges for testing."""
-    return [UpcomingBadge(name="1000 Solved", progress=0.403)]
+    return [UpcomingBadge(name="1000 Solved", progress=40.3)]
 
 
 @pytest.fixture
