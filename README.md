@@ -71,7 +71,7 @@ Grid of earned LeetCode badges with upcoming badge progress.
 Current and longest streaks with monthly activity bar chart.
 
 ### Dashboard (`dashboard.svg`)
-All-in-one combined card with compact stats, difficulty, streak, and recent contests.
+All-in-one combined master card assembling Stats, Difficulty breakdown, Contest rating history, Activity streak, and 52-week Submission heatmap.
 
 ## 🎨 Themes
 
@@ -129,18 +129,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: gufran21/leetcode-profile-generator@v1
+      - uses: gufran21/LeetCodeProfileGenerator@v1
         with:
-          username:  # 👈Replace with your LeetCode username
-          theme: github_dark
+          username: 'cpcs'  # 👈 Replace with your LeetCode username
+          theme: 'github_dark'
+          generate_dashboard: 'true'  # 👈 Enable cards you want generated
+          generate_stats: 'true'
+          generate_streak: 'true'
 ```
 
 ### Embed in your GitHub Profile `README.md`:
 
 ```markdown
+![LeetCode Dashboard](./assets/dashboard.svg)
 ![LeetCode Stats](./assets/leetcode_stats.svg)
-![Rating History](./assets/rating_history.svg)
-![Submission Heatmap](./assets/heatmap.svg)
+![Streak Card](./assets/streak.svg)
 ```
 
 ### Action Inputs
@@ -152,14 +155,14 @@ jobs:
 | `output_dir` | `assets` | Directory where SVG files are saved |
 | `auto_commit` | `true` | Automatically commit and push updated SVGs back to repository |
 | `commit_message` | `chore: update LeetCode profile cards [skip ci]` | Git commit message |
-| `generate_stats` | `true` | Generate `leetcode_stats.svg` |
-| `generate_rating` | `true` | Generate `rating_history.svg` |
-| `generate_difficulty` | `true` | Generate `difficulty.svg` |
-| `generate_heatmap` | `true` | Generate `heatmap.svg` |
-| `generate_streak` | `true` | Generate `streak.svg` |
-| `generate_contest_history` | `true` | Generate `contest_history.svg` |
-| `generate_badges` | `true` | Generate `badges.svg` |
-| `generate_dashboard` | `false` | Generate `dashboard.svg` |
+| `generate_dashboard` | `false` | Set to `'true'` to generate `dashboard.svg` |
+| `generate_stats` | `false` | Set to `'true'` to generate `leetcode_stats.svg` |
+| `generate_rating` | `false` | Set to `'true'` to generate `rating_history.svg` |
+| `generate_difficulty` | `false` | Set to `'true'` to generate `difficulty.svg` |
+| `generate_heatmap` | `false` | Set to `'true'` to generate `heatmap.svg` |
+| `generate_streak` | `false` | Set to `'true'` to generate `streak.svg` |
+| `generate_contest_history` | `false` | Set to `'true'` to generate `contest_history.svg` |
+| `generate_badges` | `false` | Set to `'true'` to generate `badges.svg` |
 
 ## 💻 CLI
 

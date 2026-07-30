@@ -9,7 +9,8 @@ from __future__ import annotations
 from ..models.combined import LeetCodeData
 from ..render.svg import SVGRenderer
 from ..render.themes import Theme
-from ..utils.date import format_short_date
+from ..utils.date import format_date
+from ..utils.fonts import FONT_FAMILY
 from ..utils.icons import render_icon
 from ..utils.math import (
     Point,
@@ -73,13 +74,20 @@ def generate_rating_card(data: LeetCodeData, theme: Theme) -> str:
         title=f"{data.profile.username}'s Rating History",
     ))
 
+    yellow_accent = "#ffa116"
+
     # ── Defs ──
     svg_parts.append("<defs>")
     if theme.bg_gradient:
         svg_parts.append(renderer.create_gradient("bg_grad", theme.bg_gradient[0], theme.bg_gradient[1]))
     svg_parts.append(renderer.create_drop_shadow("card_shadow", blur=8, offset_y=4, color=theme.shadow_color))
-    svg_parts.append(renderer.create_gradient("area_fill", theme.chart_line_color + "30", theme.chart_line_color + "05", "vertical"))
-    svg_parts.append(renderer.create_glow("dot_glow", theme.chart_dot_color, 3))
+    svg_parts.append(
+        f'<linearGradient id="area_fill" x1="0%" y1="0%" x2="0%" y2="100%">'
+        f'<stop offset="0%" stop-color="{yellow_accent}" stop-opacity="0.35"/>'
+        f'<stop offset="100%" stop-color="{yellow_accent}" stop-opacity="0.0"/>'
+        f'</linearGradient>'
+    )
+    svg_parts.append(renderer.create_glow("dot_glow", yellow_accent, 3))
 
     svg_parts.append("<style>")
     svg_parts.append("""
@@ -103,7 +111,7 @@ def generate_rating_card(data: LeetCodeData, theme: Theme) -> str:
     svg_parts.append('<g class="chart-content">')
 
     # ── Title ──
-    svg_parts.append(render_icon("chart", padding, padding + 2, 16, theme.icon_color))
+    svg_parts.append(render_icon("chart", padding, padding + 2, 16, yellow_accent))
     svg_parts.append(renderer.text(
         padding + 22, padding + 15, "Contest Rating History",
         font_size=16, fill=theme.title_color, weight="bold",
@@ -138,7 +146,7 @@ def generate_rating_card(data: LeetCodeData, theme: Theme) -> str:
 
     for idx in label_indices:
         x = chart_points[idx].x
-        label = format_short_date(records[idx].timestamp)
+        label = format_date(records[idx].timestamp, "%b %Y")
         svg_parts.append(renderer.text(
             x, chart_bottom + 16, label,
             font_size=9, fill=theme.text_secondary, anchor="middle",
@@ -148,64 +156,65 @@ def generate_rating_card(data: LeetCodeData, theme: Theme) -> str:
     if len(chart_points) >= 2:
         area_path = points_to_area_path(chart_points, chart_bottom)
         svg_parts.append(
-            f'<path d="{area_path}" fill="url(#area_fill)" opacity="0.6"/>'
+            f'<path d="{area_path}" fill="url(#area_fill)"/>'
         )
 
-    # ── Smooth curve line ──
+    # ── Smooth curve line (Yellow #ffa116) ──
     if len(chart_points) >= 2:
         line_path = points_to_svg_path(chart_points)
         svg_parts.append(
             f'<path d="{line_path}" fill="none" '
-            f'stroke="{theme.chart_line_color}" stroke-width="2.5" stroke-linecap="round"/>'
+            f'stroke="{yellow_accent}" stroke-width="2.5" stroke-linecap="round"/>'
         )
 
     # ── Data point dots with tooltips ──
     for i, (point, record) in enumerate(zip(chart_points, records, strict=False)):
         tooltip = f"{record.title} — Rating: {record.rating:.0f}, Rank: #{format_number(record.ranking)}"
-        dot_r = 3
 
         if i == peak_idx:
-            # Peak: star marker
+            # Peak: star marker in yellow #ffa116
             dot_r = 5
             svg_parts.append(f'<circle cx="{point.x:.1f}" cy="{point.y:.1f}" r="{dot_r}" '
-                             f'fill="{theme.hard_color}" filter="url(#dot_glow)"><title>{tooltip}</title></circle>')
-            svg_parts.append(render_icon("star", point.x - 6, point.y - 20, 12, theme.hard_color))
-        elif i == latest_idx:
-            # Latest: larger accent dot
-            dot_r = 5
-            svg_parts.append(f'<circle cx="{point.x:.1f}" cy="{point.y:.1f}" r="{dot_r}" '
-                             f'fill="{theme.accent_color}" filter="url(#dot_glow)"><title>{tooltip}</title></circle>')
+                             f'fill="{yellow_accent}" filter="url(#dot_glow)"><title>{tooltip}</title></circle>')
+            svg_parts.append(render_icon("star", point.x - 6, point.y - 20, 12, yellow_accent))
         else:
-            # Regular dot (only show every Nth for readability when many points)
-            if len(records) <= 30 or i % max(1, len(records) // 20) == 0:
+            # All other dots are white
+            dot_r = 4 if i == latest_idx else 3
+            dot_color = theme.title_color
+            opacity = "1.0" if i == latest_idx else "0.8"
+            if i == latest_idx or len(records) <= 30 or i % max(1, len(records) // 20) == 0:
                 svg_parts.append(f'<circle cx="{point.x:.1f}" cy="{point.y:.1f}" r="{dot_r}" '
-                                 f'fill="{theme.chart_dot_color}" opacity="0.7"><title>{tooltip}</title></circle>')
+                                 f'fill="{dot_color}" opacity="{opacity}"><title>{tooltip}</title></circle>')
 
-    # ── Peak rating dashed line ──
+    # ── Peak rating dashed line (#ffa116) ──
     peak_y = scale_value(max_rating, nice_min, nice_max, chart_bottom, chart_top)
     svg_parts.append(
         f'<line x1="{chart_left}" y1="{peak_y:.1f}" x2="{chart_right}" y2="{peak_y:.1f}" '
-        f'stroke="{theme.hard_color}" stroke-width="0.8" stroke-dasharray="6,4" opacity="0.4"/>'
+        f'stroke="{yellow_accent}" stroke-width="0.8" stroke-dasharray="6,4" opacity="0.6"/>'
     )
 
     # ── Footer: Current / Peak / Contests ──
     footer_y = height - padding - 5
     current_rating = records[-1].rating
 
-    svg_parts.append(f'<circle cx="{padding + 4}" cy="{footer_y - 4}" r="4" fill="{theme.accent_color}"/>')
-    svg_parts.append(renderer.text(
-        padding + 14, footer_y, f"Current: {current_rating:.0f}",
-        font_size=11, fill=theme.text_color,
-    ))
+    svg_parts.append(f'<circle cx="{padding + 4}" cy="{footer_y - 4}" r="4" fill="{theme.title_color}"/>')
+    svg_parts.append(
+        f'<text x="{padding + 14}" y="{footer_y}" font-family="{FONT_FAMILY}" font-size="11">'
+        f'<tspan fill="{theme.text_secondary}">Current: </tspan>'
+        f'<tspan fill="{theme.title_color}" font-weight="bold">{current_rating:.0f}</tspan>'
+        f'</text>'
+    )
 
     sep1_x = padding + 130
     svg_parts.append(renderer.text(sep1_x, footer_y, "│", font_size=11, fill=theme.separator_color))
 
-    svg_parts.append(render_icon("star", sep1_x + 14, footer_y - 10, 12, theme.hard_color))
-    svg_parts.append(renderer.text(
-        sep1_x + 30, footer_y, f"Peak: {max_rating:.0f}",
-        font_size=11, fill=theme.text_color,
-    ))
+    svg_parts.append(render_icon("star", sep1_x + 14, footer_y - 10, 12, yellow_accent))
+    svg_parts.append(
+        f'<text x="{sep1_x + 30}" y="{footer_y}" font-family="{FONT_FAMILY}" font-size="11">'
+        f'<tspan fill="{theme.text_secondary}">Peak: </tspan>'
+        f'<tspan fill="{yellow_accent}" font-weight="bold">{max_rating:.0f}</tspan>'
+        f'</text>'
+    )
 
     sep2_x = sep1_x + 130
     svg_parts.append(renderer.text(sep2_x, footer_y, "│", font_size=11, fill=theme.separator_color))

@@ -86,7 +86,7 @@ class TestBadge:
 
 class TestUpcomingBadge:
     def test_progress_percentage(self):
-        badge = UpcomingBadge(name="test", progress=0.403)
+        badge = UpcomingBadge(name="test", progress=40.3)
         assert badge.progress_percentage == 40.3
 
 

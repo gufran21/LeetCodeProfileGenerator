@@ -13,6 +13,7 @@ from ..render.svg import SVGRenderer
 from ..render.themes import Theme
 from ..utils.colors import heatmap_color
 from ..utils.date import get_month_labels, get_week_grid, timestamp_to_date
+from ..utils.fonts import FONT_FAMILY
 from ..utils.icons import render_icon
 from ..utils.math import format_number
 
@@ -121,6 +122,18 @@ def generate_heatmap_card(data: LeetCodeData, theme: Theme) -> str:
         f"{format_number(total_submissions)} submissions in the past year",
         font_size=14, fill=theme.title_color, weight="bold",
     ))
+
+    # ── Top Right Stats (Total Active Days & Max Streak) ──
+    active_days_str = format_number(data.activity.total_active_days)
+    max_streak_str = format_number(data.activity.longest_streak)
+    svg_parts.append(
+        f'<text x="{width - padding}" y="{padding + 15}" font-family="{FONT_FAMILY}" font-size="11" text-anchor="end">'
+        f'<tspan fill="{theme.text_secondary}">Total active days: </tspan>'
+        f'<tspan fill="{theme.title_color}" font-weight="bold">{active_days_str}</tspan>'
+        f'<tspan fill="{theme.text_secondary}">   Max streak: </tspan>'
+        f'<tspan fill="{theme.title_color}" font-weight="bold">{max_streak_str}</tspan>'
+        f'</text>'
+    )
 
     # ── Grid origin ──
     grid_x = padding + day_label_w

@@ -51,4 +51,4 @@ class UpcomingBadge:
     @property
     def progress_percentage(self) -> float:
         """Progress as a percentage (0-100)."""
-        return round(self.progress * 100, 1)
+        return round(self.progress, 1)

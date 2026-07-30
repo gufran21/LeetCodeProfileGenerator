@@ -29,31 +29,31 @@ inputs:
   generate_stats:
     description: 'Generate stats card'
     required: false
-    default: 'true'
+    default: 'false'
   generate_rating:
     description: 'Generate rating history graph'
     required: false
-    default: 'true'
+    default: 'false'
   generate_difficulty:
     description: 'Generate difficulty distribution card'
     required: false
-    default: 'true'
+    default: 'false'
   generate_heatmap:
     description: 'Generate submission heatmap'
     required: false
-    default: 'true'
+    default: 'false'
   generate_streak:
     description: 'Generate streak card'
     required: false
-    default: 'true'
+    default: 'false'
   generate_contest_history:
     description: 'Generate contest history table'
     required: false
-    default: 'true'
+    default: 'false'
   generate_badges:
     description: 'Generate badges card'
     required: false
-    default: 'true'
+    default: 'false'
   generate_dashboard:
     description: 'Generate combined dashboard card'
     required: false
