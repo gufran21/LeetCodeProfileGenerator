@@ -2,24 +2,9 @@
 
 
 from leetcode_profile_generator.services.streak_calculator import (
-    calculate_current_streak,
     calculate_longest_streak,
     calculate_monthly_activity,
 )
-
-
-class TestCalculateCurrentStreak:
-    def test_empty_calendar(self):
-        assert calculate_current_streak({}) == 0
-
-    def test_no_submissions(self):
-        assert calculate_current_streak({"1718524800": 0}) == 0
-
-    def test_single_day(self):
-        # Use a recent timestamp that would be today or yesterday
-        import time
-        today_ts = str(int(time.time()) - (int(time.time()) % 86400))
-        assert calculate_current_streak({today_ts: 3}) >= 0
 
 
 class TestCalculateLongestStreak:

@@ -21,7 +21,6 @@ from ..models.contest import ContestRanking, ContestRecord
 from ..models.profile import SolvedStats, UserProfile
 from ..utils.cache import FileCache
 from .streak_calculator import (
-    calculate_current_streak,
     calculate_longest_streak,
     calculate_monthly_activity,
 )
@@ -276,14 +275,11 @@ class LeetCodeDataService:
         except json.JSONDecodeError:
             calendar = {}
 
-        api_streak = cal_data.get("streak", 0)
-        computed_current = calculate_current_streak(calendar)
         computed_longest = calculate_longest_streak(calendar)
         monthly = calculate_monthly_activity(calendar)
 
         return ActivityData(
-            current_streak=api_streak if api_streak > 0 else computed_current,
-            longest_streak=computed_longest,
+            longest_streak=max(cal_data.get("streak", 0), computed_longest),
             total_active_days=cal_data.get("totalActiveDays", 0),
             submission_calendar=calendar,
             active_years=cal_data.get("activeYears", []),

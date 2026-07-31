@@ -9,7 +9,6 @@ from dataclasses import dataclass, field
 class ActivityData:
     """Submission activity data including streaks and calendar."""
 
-    current_streak: int = 0
     longest_streak: int = 0
     total_active_days: int = 0
     submission_calendar: dict[str, int] = field(default_factory=dict)

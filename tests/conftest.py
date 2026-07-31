@@ -131,7 +131,6 @@ def sample_contest_history() -> list[ContestRecord]:
 def sample_activity() -> ActivityData:
     """Sample ActivityData for testing."""
     return ActivityData(
-        current_streak=23,
         longest_streak=87,
         total_active_days=312,
         submission_calendar={
