@@ -1,6 +1,6 @@
 """Streak card generator.
 
-Generates `streak.svg` featuring current and longest streak cards,
+Generates `streak.svg` featuring the longest streak card,
 vibrant flame graphics, and a smooth monthly activity area graph.
 """
 
@@ -139,25 +139,29 @@ def generate_streak_card(data: LeetCodeData, theme: Theme) -> str:
         f'</text>'
     )
 
-    # ── Row 1: Streak Cards (Side by Side Pills) ──
+    # ── Row 1: Longest Streak Card (Full Width, Centered) ──
     card_y = padding + 34
-    card_w = (width - padding * 2 - 14) / 2  # ~201px each
+    card_w = width - padding * 2
     card_h = 60
 
-    # Current Streak Card (Left)
     svg_parts.append(
         f'<rect x="{padding}" y="{card_y}" width="{card_w}" height="{card_h}" rx="10" '
         f'fill="{theme.separator_color}" fill-opacity="0.5" '
         f'stroke="{theme.border_color}" stroke-width="0.8"/>'
     )
+
+    # Flame icon centered-left
+    icon_x = padding + 16
     svg_parts.append(
-        render_icon("fire", padding + 12, card_y + 14, 28, "url(#flame_grad)")
+        render_icon("fire", icon_x, card_y + 14, 28, "url(#flame_grad)")
     )
+
+    # Streak value
     svg_parts.append(
         renderer.text(
-            padding + 48,
+            icon_x + 42,
             card_y + 28,
-            f"{data.activity.current_streak} Days",
+            f"{data.activity.longest_streak} Days",
             font_size=18,
             fill=orange_accent,
             weight="bold",
@@ -165,42 +169,17 @@ def generate_streak_card(data: LeetCodeData, theme: Theme) -> str:
     )
     svg_parts.append(
         renderer.text(
-            padding + 48,
-            card_y + 44,
-            "Current Streak",
-            font_size=11,
-            fill=theme.text_secondary,
-        )
-    )
-
-    # Longest Streak Card (Right)
-    right_card_x = padding + card_w + 14
-    svg_parts.append(
-        f'<rect x="{right_card_x}" y="{card_y}" width="{card_w}" height="{card_h}" rx="10" '
-        f'fill="{theme.separator_color}" fill-opacity="0.5" '
-        f'stroke="{theme.border_color}" stroke-width="0.8"/>'
-    )
-    svg_parts.append(
-        render_icon("lightning", right_card_x + 12, card_y + 14, 28, orange_accent)
-    )
-    svg_parts.append(
-        renderer.text(
-            right_card_x + 48,
-            card_y + 28,
-            f"{data.activity.longest_streak} Days",
-            font_size=18,
-            fill=theme.title_color,
-            weight="bold",
-        )
-    )
-    svg_parts.append(
-        renderer.text(
-            right_card_x + 48,
+            icon_x + 42,
             card_y + 44,
             "Longest Streak",
             font_size=11,
             fill=theme.text_secondary,
         )
+    )
+
+    # Lightning icon on right side
+    svg_parts.append(
+        render_icon("lightning", width - padding - 44, card_y + 16, 24, orange_accent)
     )
 
     # ── Separator Line ──

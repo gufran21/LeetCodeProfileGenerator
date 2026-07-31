@@ -1,7 +1,7 @@
 """Streak and activity calculation from submission calendar data.
 
 The LeetCode submission calendar is a JSON string mapping Unix timestamp
-strings to submission counts. These functions compute streaks, monthly
+strings to submission counts. These functions compute longest streak, monthly
 activity, and other derived metrics from that raw data.
 """
 
@@ -28,42 +28,6 @@ def _parse_calendar(calendar: dict[str, int]) -> dict[date, int]:
         except (ValueError, OSError):
             continue
     return result
-
-
-def calculate_current_streak(calendar: dict[str, int]) -> int:
-    """Calculate the current consecutive day streak ending today.
-
-    A streak is broken if the user didn't submit anything on a day.
-    Today counts as part of the streak (if there's a submission today)
-    or the streak ended yesterday.
-
-    Args:
-        calendar: Dict mapping Unix timestamp strings to submission counts.
-
-    Returns:
-        Current streak length in days.
-    """
-    if not calendar:
-        return 0
-
-    date_calendar = _parse_calendar(calendar)
-    if not date_calendar:
-        return 0
-
-    today = date.today()
-    streak = 0
-
-    # Check if there's a submission today; if not, start from yesterday
-    current = today
-    if current not in date_calendar or date_calendar[current] == 0:
-        current = today - timedelta(days=1)
-
-    # Count backwards
-    while current in date_calendar and date_calendar[current] > 0:
-        streak += 1
-        current -= timedelta(days=1)
-
-    return streak
 
 
 def calculate_longest_streak(calendar: dict[str, int]) -> int:

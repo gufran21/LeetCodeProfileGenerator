@@ -66,7 +66,6 @@ class TestParseActivity:
         service = LeetCodeDataService(use_cache=False, fetch_avatar=False)
         activity = service._parse_activity(calendar_response)
 
-        assert activity.current_streak == 23
         assert activity.total_active_days == 312
         assert len(activity.submission_calendar) > 0
         assert activity.active_years == [2023, 2024, 2025]
