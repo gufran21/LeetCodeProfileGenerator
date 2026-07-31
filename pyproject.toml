@@ -49,9 +49,9 @@ packages = ["src/leetcode_profile_generator"]
 extraPaths = ["src"]
 
 [project.urls]
-Homepage = "https://github.com/gufran21/leetcode-profile-generator"
-Repository = "https://github.com/gufran21/leetcode-profile-generator"
-Issues = "https://github.com/gufran21/leetcode-profile-generator/issues"
+Homepage = "https://github.com/gufran21/LeetCodeProfileGenerator"
+Repository = "https://github.com/gufran21/LeetCodeProfileGenerator"
+Issues = "https://github.com/gufran21/LeetCodeProfileGenerator/issues"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
