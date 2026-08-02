@@ -131,7 +131,7 @@ jobs:
 
       - uses: gufran21/LeetCodeProfileGenerator@v1
         with:
-          username: 'cpcs'  # 👈 Replace with your LeetCode username
+          username: ''  # 👈 Replace with your LeetCode username
           theme: 'github_dark'
           generate_dashboard: 'true'  # 👈 Enable cards you want generated
           generate_stats: 'true'
